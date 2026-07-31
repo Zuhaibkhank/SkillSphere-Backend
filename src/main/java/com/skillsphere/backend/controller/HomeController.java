@@ -10,4 +10,9 @@ public class HomeController {
     public String home() {
         return "SkillSphere Backend is Running 🚀";
     }
+
+    @GetMapping("/health")
+    public String health() {
+        return "Application is Healthy ✅";
+    }
 }
