@@ -1,5 +1,6 @@
 package com.skillsphere.backend.controller;
 
+import com.skillsphere.backend.dto.LoginResponse;
 import com.skillsphere.backend.dto.LoginRequest;
 import com.skillsphere.backend.dto.RegisterRequest;
 import com.skillsphere.backend.service.UserService;
@@ -19,7 +20,7 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public String login(@RequestBody LoginRequest request) {
+    public LoginResponse login(@RequestBody LoginRequest request) {
         return userService.login(request);
     }
 }

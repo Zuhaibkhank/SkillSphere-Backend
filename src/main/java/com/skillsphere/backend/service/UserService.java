@@ -7,6 +7,9 @@ import com.skillsphere.backend.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.skillsphere.backend.dto.LoginResponse;
+import com.skillsphere.backend.security.JwtUtil;
+
 import java.util.Optional;
 
 @Service
@@ -31,19 +34,23 @@ public class UserService {
 
         return "Registration Successful";
     }
+    @Autowired
+    private JwtUtil jwtUtil;
 
-    public String login(LoginRequest request) {
+    public LoginResponse login(LoginRequest request) {
 
         Optional<User> user = userRepository.findByEmail(request.getEmail());
 
         if (user.isEmpty()) {
-            return "User not found";
+            return new LoginResponse("User not found", null);
         }
 
         if (!user.get().getPassword().equals(request.getPassword())) {
-            return "Invalid Password";
+            return new LoginResponse("Invalid Password", null);
         }
 
-        return "Login Successful";
+        String token = jwtUtil.generateToken(user.get().getEmail());
+
+            return new LoginResponse("Login Successful", token);
     }
 }
