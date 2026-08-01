@@ -10,7 +10,8 @@ import java.util.Date;
 @Component
 public class JwtUtil {
 
-    private final String SECRET = "SkillSphereSecretKey123456789";
+    private static final String SECRET =
+    "1234567890123456789012345678901234567890123456789012345678901234";
 
     public String generateToken(String email) {
 
