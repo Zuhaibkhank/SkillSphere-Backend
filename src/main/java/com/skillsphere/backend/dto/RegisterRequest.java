@@ -1,49 +1,32 @@
-package com.skillsphere.backend.service;
+package com.skillsphere.backend.dto;
 
-import com.skillsphere.backend.dto.LoginRequest;
-import com.skillsphere.backend.dto.RegisterRequest;
-import com.skillsphere.backend.entity.User;
-import com.skillsphere.backend.repository.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+public class RegisterRequest {
 
-import java.util.Optional;
+    private String fullName;
+    private String email;
+    private String password;
 
-@Service
-public class UserService {
-
-    @Autowired
-    private UserRepository userRepository;
-
-    public String register(RegisterRequest request) {
-
-        if (userRepository.existsByEmail(request.getEmail())) {
-            return "Email already exists";
-        }
-
-        User user = new User();
-        user.setFullName(request.getFullName());
-        user.setEmail(request.getEmail());
-        user.setPassword(request.getPassword());
-        user.setRole(request.getRole());
-
-        userRepository.save(user);
-
-        return "Registration Successful";
+    public String getFullName() {
+        return fullName;
     }
 
-    public String login(LoginRequest request) {
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
+    }
 
-        Optional<User> user = userRepository.findByEmail(request.getEmail());
+    public String getEmail() {
+        return email;
+    }
 
-        if (user.isEmpty()) {
-            return "User not found";
-        }
+    public void setEmail(String email) {
+        this.email = email;
+    }
 
-        if (!user.get().getPassword().equals(request.getPassword())) {
-            return "Invalid Password";
-        }
+    public String getPassword() {
+        return password;
+    }
 
-        return "Login Successful";
+    public void setPassword(String password) {
+        this.password = password;
     }
 }
