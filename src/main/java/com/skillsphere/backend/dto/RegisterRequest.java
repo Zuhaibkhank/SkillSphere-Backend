@@ -1,32 +1,49 @@
-package com.skillsphere.backend.dto;
+package com.skillsphere.backend.service;
 
-public class RegisterRequest {
+import com.skillsphere.backend.dto.LoginRequest;
+import com.skillsphere.backend.dto.RegisterRequest;
+import com.skillsphere.backend.entity.User;
+import com.skillsphere.backend.repository.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
-    private String fullName;
-    private String email;
-    private String password;
+import java.util.Optional;
 
-    public String getFullName() {
-        return fullName;
+@Service
+public class UserService {
+
+    @Autowired
+    private UserRepository userRepository;
+
+    public String register(RegisterRequest request) {
+
+        if (userRepository.existsByEmail(request.getEmail())) {
+            return "Email already exists";
+        }
+
+        User user = new User();
+        user.setFullName(request.getFullName());
+        user.setEmail(request.getEmail());
+        user.setPassword(request.getPassword());
+        user.setRole(request.getRole());
+
+        userRepository.save(user);
+
+        return "Registration Successful";
     }
 
-    public void setFullName(String fullName) {
-        this.fullName = fullName;
-    }
+    public String login(LoginRequest request) {
 
-    public String getEmail() {
-        return email;
-    }
+        Optional<User> user = userRepository.findByEmail(request.getEmail());
 
-    public void setEmail(String email) {
-        this.email = email;
-    }
+        if (user.isEmpty()) {
+            return "User not found";
+        }
 
-    public String getPassword() {
-        return password;
-    }
+        if (!user.get().getPassword().equals(request.getPassword())) {
+            return "Invalid Password";
+        }
 
-    public void setPassword(String password) {
-        this.password = password;
+        return "Login Successful";
     }
 }
