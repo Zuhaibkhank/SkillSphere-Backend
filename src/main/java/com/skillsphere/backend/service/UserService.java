@@ -1,10 +1,13 @@
 package com.skillsphere.backend.service;
 
+import com.skillsphere.backend.dto.LoginRequest;
 import com.skillsphere.backend.dto.RegisterRequest;
 import com.skillsphere.backend.entity.User;
 import com.skillsphere.backend.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Service
 public class UserService {
@@ -22,23 +25,25 @@ public class UserService {
         user.setFullName(request.getFullName());
         user.setEmail(request.getEmail());
         user.setPassword(request.getPassword());
+        user.setRole(request.getRole());
 
         userRepository.save(user);
 
         return "Registration Successful";
     }
-}
-public String login(LoginRequest request) {
 
-    Optional<User> user = userRepository.findByEmail(request.getEmail());
+    public String login(LoginRequest request) {
 
-    if (user.isEmpty()) {
-        return "User not found";
+        Optional<User> user = userRepository.findByEmail(request.getEmail());
+
+        if (user.isEmpty()) {
+            return "User not found";
+        }
+
+        if (!user.get().getPassword().equals(request.getPassword())) {
+            return "Invalid Password";
+        }
+
+        return "Login Successful";
     }
-
-    if (!user.get().getPassword().equals(request.getPassword())) {
-        return "Invalid Password";
-    }
-
-    return "Login Successful";
 }
