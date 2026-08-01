@@ -28,3 +28,17 @@ public class UserService {
         return "Registration Successful";
     }
 }
+public String login(LoginRequest request) {
+
+    Optional<User> user = userRepository.findByEmail(request.getEmail());
+
+    if (user.isEmpty()) {
+        return "User not found";
+    }
+
+    if (!user.get().getPassword().equals(request.getPassword())) {
+        return "Invalid Password";
+    }
+
+    return "Login Successful";
+}
