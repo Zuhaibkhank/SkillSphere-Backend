@@ -1,13 +1,9 @@
-package com.skillsphere.backend.dto;
-
 public class RegisterRequest {
 
     private String fullName;
     private String email;
     private String password;
-
-    public RegisterRequest() {
-    }
+    private String role;
 
     public String getFullName() {
         return fullName;
@@ -31,5 +27,13 @@ public class RegisterRequest {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
     }
 }
